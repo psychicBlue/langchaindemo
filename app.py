@@ -19,6 +19,7 @@ Question: {question}
 embedder = default_embedder
 db = Chroma(persist_directory="./chromadb", embedding_function=embedder)
 retriever = db.as_retriever(search_kwargs={"k": 1})
+
 prompt = PromptTemplate(template=template, input_variables=["context", "question"])
 
 # llm = CustomLLM()
@@ -31,3 +32,4 @@ chain = (
     | StrOutputParser()
 )
 print(chain.invoke(question))
+

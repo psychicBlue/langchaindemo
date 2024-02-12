@@ -6,6 +6,7 @@ from chromadb.api.types import (
     EmbeddingFunction
 )
 from dotenv import load_dotenv
+load_dotenv()
 
 class CustomChromaEmbedder(EmbeddingFunction):
     def __init__(self):
