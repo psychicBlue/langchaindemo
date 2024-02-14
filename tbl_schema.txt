@@ -1,0 +1,173 @@
+CREATE TABLE IF NOT EXISTS Albums (
+    AlbumId INTEGER PRIMARY KEY,
+    Title TEXT,
+    ArtistId INTEGER,
+    FOREIGN KEY (ArtistId) REFERENCES Artists(ArtistId)
+);
+-- Example output:
+-- AlbumId | Title                      | ArtistId
+-- ---------------------------------------------
+-- 1       | For Those About To Rock    | 1
+-- 2       | Balls to the Wall          | 2
+-- ...     | ...                        | ...
+
+CREATE TABLE IF NOT EXISTS Artists (
+    ArtistId INTEGER PRIMARY KEY,
+    Name TEXT
+);
+-- Example output:
+-- ArtistId | Name
+-- ----------------------
+-- 1        | AC/DC
+-- 2        | Accept
+-- ...      | ...
+
+CREATE TABLE IF NOT EXISTS Customers (
+    CustomerId INTEGER PRIMARY KEY,
+    FirstName TEXT,
+    LastName TEXT,
+    Company TEXT,
+    Address TEXT,
+    City TEXT,
+    State TEXT,
+    Country TEXT,
+    PostalCode TEXT,
+    Phone TEXT,
+    Fax TEXT,
+    Email TEXT UNIQUE,
+    SupportRepId INTEGER,
+    FOREIGN KEY (SupportRepId) REFERENCES Employees(EmployeeId)
+);
+-- Example output:
+-- CustomerId | FirstName | LastName | ... | SupportRepId
+-- ------------------------------------------------------
+-- 1          | Luís      | Gonçalves| ... | 3
+-- 2          | Leonie    | Köhler   | ... | 5
+-- ...        | ...       | ...      | ... | ...
+
+CREATE TABLE IF NOT EXISTS Employees (
+    EmployeeId INTEGER PRIMARY KEY,
+    LastName TEXT,
+    FirstName TEXT,
+    Title TEXT,
+    ReportsTo INTEGER,
+    BirthDate TEXT,
+    HireDate TEXT,
+    Address TEXT,
+    City TEXT,
+    State TEXT,
+    Country TEXT,
+    PostalCode TEXT,
+    Phone TEXT,
+    Fax TEXT,
+    Email TEXT
+);
+-- Example output:
+-- EmployeeId | LastName | FirstName | ... | ReportsTo
+-- ---------------------------------------------------
+-- 1          | Adams    | Andrew    | ... | NULL
+-- 2          | Edwards  | Nancy     | ... | 1
+-- ...        | ...      | ...       | ... | ...
+
+CREATE TABLE IF NOT EXISTS Genres (
+    GenreId INTEGER PRIMARY KEY,
+    Name TEXT
+);
+-- Example output:
+-- GenreId | Name
+-- ---------------
+-- 1       | Rock
+-- 2       | Jazz
+-- ...     | ...
+
+CREATE TABLE IF NOT EXISTS InvoiceItems (
+    InvoiceLineId INTEGER PRIMARY KEY,
+    InvoiceId INTEGER,
+    TrackId INTEGER,
+    UnitPrice NUMERIC,
+    Quantity INTEGER,
+    FOREIGN KEY (InvoiceId) REFERENCES Invoices(InvoiceId),
+    FOREIGN KEY (TrackId) REFERENCES Tracks(TrackId)
+);
+-- Example output:
+-- InvoiceLineId | InvoiceId | TrackId | UnitPrice | Quantity
+-- ---------------------------------------------------------
+-- 1             | 1         | 1158    | 0.99      | 1
+-- 2             | 1         | 1159    | 0.99      | 1
+-- ...           | ...       | ...     | ...       | ...
+
+CREATE TABLE IF NOT EXISTS Invoices (
+    InvoiceId INTEGER PRIMARY KEY,
+    CustomerId INTEGER,
+    InvoiceDate TEXT,
+    BillingAddress TEXT,
+    BillingCity TEXT,
+    BillingState TEXT,
+    BillingCountry TEXT,
+    BillingPostalCode TEXT,
+    Total NUMERIC,
+    FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
+);
+-- Example output:
+-- InvoiceId | CustomerId | InvoiceDate | ... | Total
+-- --------------------------------------------------
+-- 1         | 2          | 2009-01-01  | ... | 1.98
+-- 2         | 4          | 2009-02-01  | ... | 3.96
+-- ...       | ...        | ...         | ... | ...
+
+CREATE TABLE IF NOT EXISTS MediaTypes (
+    MediaTypeId INTEGER PRIMARY KEY,
+    Name TEXT
+);
+-- Example output:
+-- MediaTypeId | Name
+-- ----------------
+-- 1           | MPEG audio file
+-- 2           | Protected AAC audio file
+-- ...         | ...
+
+CREATE TABLE IF NOT EXISTS PlaylistTrack (
+    PlaylistId INTEGER,
+    TrackId INTEGER,
+    FOREIGN KEY (PlaylistId) REFERENCES Playlists(PlaylistId),
+    FOREIGN KEY (TrackId) REFERENCES Tracks(TrackId),
+    PRIMARY KEY (PlaylistId, TrackId)
+);
+-- Example output:
+-- PlaylistId | TrackId
+-- --------------------
+-- 1          | 3402
+-- 1          | 2560
+-- ...        | ...
+
+CREATE TABLE IF NOT EXISTS Playlists (
+    PlaylistId INTEGER PRIMARY KEY,
+    Name TEXT
+);
+-- Example output:
+-- PlaylistId | Name
+-- ----------------
+-- 1          | Music
+-- 2          | 90’s Music
+-- ...        | ...
+
+CREATE TABLE IF NOT EXISTS Tracks (
+    TrackId INTEGER PRIMARY KEY,
+    Name TEXT,
+    AlbumId INTEGER,
+    MediaTypeId INTEGER,
+    GenreId INTEGER,
+    Composer TEXT,
+    Milliseconds INTEGER,
+    Bytes INTEGER,
+    UnitPrice NUMERIC,
+    FOREIGN KEY (AlbumId) REFERENCES Albums(AlbumId),
+    FOREIGN KEY (MediaTypeId) REFERENCES MediaTypes(MediaTypeId),
+    FOREIGN KEY (GenreId) REFERENCES Genres(GenreId)
+);
+-- Example output:
+-- TrackId | Name                  | AlbumId | ... | UnitPrice
+-- ----------------------------------------------------------
+-- 1       | For Those About To...| 1       | ... | 0.99
+-- 2       | Balls to the Wall     | 2       | ... | 0.99
+-- ...     | ...                   | ...     | ... | ...

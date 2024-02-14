@@ -5,7 +5,8 @@ from langchain_community.vectorstores import Chroma
 
 if __name__ == "__main__":
     # load the document 
-    loader = TextLoader("./state_of_the_union.txt")
+    #loader = TextLoader("./state_of_the_union.txt")
+    loader = TextLoader("./tbl_schema.txt")
     documents = loader.load()
 
     # split it into chunks

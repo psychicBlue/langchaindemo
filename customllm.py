@@ -9,9 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 default_llm = HuggingFaceTextGenInference(
     inference_server_url= os.getenv("LLM_API"),
-    max_new_tokens=1024,
+    max_new_tokens=512,
     top_p=0.9,
-    return_full_text = True,
+    temperature = 0.9, # Setting this to 1 makes the ouput quality go down
+    return_full_text = False,
     server_kwargs={
         "headers": {
             "Content-Type": "application/json",
